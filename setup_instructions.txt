@@ -1,0 +1,74 @@
+Driver Drowsiness Detection System - Setup Instructions
+======================================================
+
+STEP 1: Install Python
+----------------------
+- Download Python 3.8 or higher from https://www.python.org/downloads/
+- During installation, check "Add Python to PATH"
+- Verify installation: Open terminal/command prompt and type: python --version
+
+STEP 2: Install Dependencies
+----------------------------
+Open terminal/command prompt in the project directory and run:
+
+    pip install -r requirements.txt
+
+This will install:
+- opencv-python (computer vision)
+- mediapipe (facial landmark detection)
+- numpy (numerical operations)
+- scipy (scientific computing)
+- scikit-learn (machine learning metrics)
+- matplotlib (plotting)
+- pandas (data handling)
+- imutils (image utilities)
+
+STEP 3: Test Installation
+-------------------------
+Run this command to verify all packages are installed:
+
+    python -c "import cv2, mediapipe, numpy; print('Installation successful!')"
+
+STEP 4: Run the System
+---------------------
+Option A - Simple launch:
+    python run.py
+
+Option B - From src directory:
+    cd src
+    python main.py
+
+Option C - With options:
+    python src/main.py --camera 0 --ear-threshold 0.25
+
+STEP 5: Usage Tips
+-----------------
+- Position yourself in front of the camera with good lighting
+- Keep your face clearly visible
+- Press 'q' to quit
+- Press 'r' to reset statistics
+
+TROUBLESHOOTING
+---------------
+1. Camera not detected:
+   - Try different camera index: --camera 1 or --camera 2
+   - Check camera permissions in system settings
+   - Ensure no other application is using the camera
+
+2. Import errors:
+   - Make sure you're in the project root directory
+   - Verify all packages are installed: pip list
+   - Try: pip install --upgrade -r requirements.txt
+
+3. Poor detection:
+   - Improve lighting conditions
+   - Adjust thresholds (lower EAR threshold = more sensitive)
+   - Ensure face is clearly visible
+
+4. Performance issues:
+   - Close other applications
+   - Reduce video resolution
+   - Use a better camera
+
+For more information, see README.md
+
