@@ -3,8 +3,9 @@
 A real-time computer vision system that detects driver drowsiness and distraction using facial landmark analysis. The system monitors eye closure, yawning, and head pose to identify signs of decreased alertness.
 
 ## Authors
-- **Ramya Ajwalia** (ID: 1002213648)
-- **Neel Katrodiya** (ID: 1002254987)
+- **Ramya Ajwalia**
+
+# October 2025
 
 ## Features
 
