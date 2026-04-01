@@ -5,7 +5,7 @@ A real-time computer vision system that detects driver drowsiness and distractio
 ## Authors
 - **Ramya Ajwalia**
 
-# October 2025
+**October 2025**
 
 ## Features
 
