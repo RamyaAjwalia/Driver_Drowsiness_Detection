@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Drowsiness Detection Presentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px;
+            color: white;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide h2 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid rgba(255,255,255,0.3);
+            padding-bottom: 15px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            margin: 25px 0 15px 0;
+            color: #ffd700;
+        }
+
+        .slide p, .slide li {
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .slide ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .slide li::before {
+            content: "▸ ";
+            color: #ffd700;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #ffd700;
+            margin-bottom: 40px;
+        }
+
+        .authors {
+            font-size: 1.2em;
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .formula {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            margin: 15px 0;
+        }
+
+        .diagram {
+            background: rgba(255,255,255,0.15);
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.8;
+            margin: 20px 0;
+            white-space: pre;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .controls button {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .controls button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            font-size: 1.2em;
+            color: white;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .checkmark {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <h1>Driver Drowsiness and Distraction Detection</h1>
+            <p class="subtitle">Using Facial Landmarks</p>
+            <div class="authors">
+                <p><strong>Author:</strong></p>
+                <p>Ramya Ajwalia</p>
+                <p style="margin-top: 30px;">Computer Vision Project</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Introduction & Motivation -->
+        <div class="slide" data-slide="2">
+            <h2>Introduction & Motivation</h2>
+            <div class="content">
+                <div class="box">
+                    <h3>Problem Statement</h3>
+                    <ul>
+                        <li><span class="highlight">Road safety is a major global concern</span></li>
+                        <li>Driver drowsiness and distraction contribute significantly to road accidents</li>
+                        <li>Need for proactive, non-intrusive monitoring systems</li>
+                    </ul>
+                </div>
+
+                <div class="box">
+                    <h3>Solution Approach</h3>
+                    <ul>
+                        <li><span class="highlight">Real-time computer vision system</span></li>
+                        <li>Analyzes facial landmarks in live video feeds</li>
+                        <li>Detects signs of decreased alertness:
+                            <ul style="margin-left: 30px; margin-top: 10px;">
+                                <li>Prolonged eye closure (drowsiness)</li>
+                                <li>Head pose deviations (distraction)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="box">
+                    <h3>Impact</h3>
+                    <ul>
+                        <li><span class="checkmark">✓</span> <span class="highlight">High societal value:</span> Contributes to safer roadways</li>
+                        <li><span class="checkmark">✓</span> <span class="highlight">Non-intrusive:</span> No physical sensors required</li>
+                        <li><span class="checkmark">✓</span> <span class="highlight">Real-time:</span> Suitable for Advanced Driver Assistance Systems (ADAS)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Methodology -->
+        <div class="slide" data-slide="3">
+            <h2>Methodology - Technical Approach</h2>
+            <div class="content">
+                <div class="box">
+                    <h3>1. Facial Landmark Detection</h3>
+                    <ul>
+                        <li><span class="highlight">MediaPipe Face Mesh:</span> Detects 468 facial landmarks in real-time</li>
+                        <li>Extracts key regions: eyes, mouth, facial structure</li>
+                    </ul>
+                </div>
+
+                <div class="box">
+                    <h3>2. Feature Extraction</h3>
+                    <p><span class="highlight">Eye Aspect Ratio (EAR)</span></p>
+                    <ul>
+                        <li>Measures eye opening/closing</li>
+                        <li>Low EAR indicates closed eyes → Drowsiness</li>
+                    </ul>
+                    <div class="formula">
+                        EAR = (|p2-p6| + |p3-p5|) / (2 × |p1-p4|)
+                    </div>
+
+                    <p style="margin-top: 20px;"><span class="highlight">Head Pose Estimation</span></p>
+                    <ul>
+                        <li>Calculates pitch, yaw, and roll angles using cv2.solvePnP</li>
+                        <li>Detects head deviations from forward-facing position</li>
+                        <li>Angles > 45° for > 5 seconds → Distraction</li>
+                    </ul>
+                </div>
+
+                <div class="box">
+                    <h3>3. Detection Logic</h3>
+                    <ul>
+                        <li>Rule-based classification using configurable thresholds</li>
+                        <li>Consecutive frame counting to avoid false positives</li>
+                        <li>Blink filtering (ignores normal blinks < 1 second)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: System Implementation -->
+        <div class="slide" data-slide="4">
+            <h2>System Implementation</h2>
+            <div class="content">
+                <div class="two-column">
+                    <div>
+                        <div class="box">
+                            <h3>Real-time Processing</h3>
+                            <ul>
+                                <li>Live camera feed processing at 30 FPS</li>
+                                <li>Efficient MediaPipe pipeline</li>
+                                <li>Low latency detection</li>
+                            </ul>
+                        </div>
+
+                        <div class="box">
+                            <h3>Multi-indicator Detection</h3>
+                            <ul>
+                                <li><span class="checkmark">✓</span> Drowsiness: Eye closure > 1 second</li>
+                                <li><span class="checkmark">✓</span> Distraction: Head turn > 5 seconds</li>
+                                <li><span class="checkmark">✓</span> Smart filtering: Ignores normal mirror checks</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="box">
+                            <h3>Alert System</h3>
+                            <ul>
+                                <li><span class="highlight">Visual Alerts:</span> Colored borders, on-screen warnings</li>
+                                <li><span class="highlight">Audio Alerts:</span> Continuous beeping with escalation
+                                    <ul style="margin-left: 30px; margin-top: 10px;">
+                                        <li>After 5 seconds: 3x faster and higher frequency</li>
+                                    </ul>
+                                </li>
+                                <li><span class="highlight">Statistics Tracking:</span> Frame counts, alert history</li>
+                            </ul>
+                        </div>
+
+                        <div class="box">
+                            <h3>Flexible Configuration</h3>
+                            <ul>
+                                <li>Adjustable thresholds (EAR, head pose angles)</li>
+                                <li>Configurable frame counts</li>
+                                <li>Command-line arguments for customization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Technical Architecture -->
+        <div class="slide" data-slide="5">
+            <h2>Technical Architecture</h2>
+            <div class="content">
+                <h3>System Components</h3>
+                <div class="diagram">┌─────────────────────────────────────────┐
+│     Video Input (Camera/File)           │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│  Facial Landmark Detection (MediaPipe)  │
+│  - 468 facial landmarks                 │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│      Feature Extraction                 │
+│  - EAR Calculation                      │
+│  - Head Pose Estimation (solvePnP)      │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│    Detection Logic (Rule-based)         │
+│  - Threshold comparison                 │
+│  - Consecutive frame counting           │
+└──────────────┬──────────────────────────┘
+               │
+┌──────────────▼──────────────────────────┐
+│      Alert System                        │
+│  - Visual & Audio feedback              │
+└─────────────────────────────────────────┘</div>
+
+                <h3>Technology Stack</h3>
+                <div class="tech-stack">
+                    <div class="tech-item">
+                        <strong>OpenCV 4.8.1</strong><br>
+                        Image processing, video capture
+                    </div>
+                    <div class="tech-item">
+                        <strong>MediaPipe 0.10.8</strong><br>
+                        Facial landmark detection
+                    </div>
+                    <div class="tech-item">
+                        <strong>NumPy</strong><br>
+                        Numerical operations
+                    </div>
+                    <div class="tech-item">
+                        <strong>Python 3.8+</strong><br>
+                        Implementation language
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Results & Evaluation -->
+        <div class="slide" data-slide="6">
+            <h2>Results & Evaluation</h2>
+            <div class="content">
+                <div class="box">
+                    <h3>Performance Metrics</h3>
+                    <p><span class="highlight">Detection Accuracy</span></p>
+                    <ul>
+                        <li>Real-time processing: ~30 FPS</li>
+                        <li>Low false positive rate through consecutive frame validation</li>
+                        <li>Configurable sensitivity via thresholds</li>
+                    </ul>
+
+                    <p style="margin-top: 20px;"><span class="highlight">Key Achievements</span></p>
+                    <ul>
+                        <li><span class="checkmark">✓</span> Accurate drowsiness detection (eye closure > 1 sec)</li>
+                        <li><span class="checkmark">✓</span> Distraction detection with smart filtering</li>
+                        <li><span class="checkmark">✓</span> Continuous audio alerts with escalation</li>
+                        <li><span class="checkmark">✓</span> Robust to normal driving behaviors (mirror checks)</li>
+                    </ul>
+                </div>
+
+                <div class="two-column">
+                    <div class="box">
+                        <h3>Evaluation Framework</h3>
+                        <ul>
+                            <li><span class="highlight">Metrics:</span> Accuracy, Precision, Recall, F1-Score</li>
+                            <li><span class="highlight">Ground truth support:</span> JSON-based labeling</li>
+                            <li><span class="highlight">Video processing:</span> Batch evaluation capability</li>
+                        </ul>
+                    </div>
+
+                    <div class="box">
+                        <h3>System Capabilities</h3>
+                        <ul>
+                            <li><span class="highlight">Real-time:</span> Live camera feed</li>
+                            <li><span class="highlight">Offline:</span> Video file processing</li>
+                            <li><span class="highlight">Configurable:</span> Adjustable parameters</li>
+                            <li><span class="highlight">Extensible:</span> Modular architecture</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Conclusion & Future Work -->
+        <div class="slide" data-slide="7">
+            <h2>Conclusion & Future Work</h2>
+            <div class="content">
+                <div class="box">
+                    <h3>Project Contributions</h3>
+                    <ul>
+                        <li>Complete implementation of real-time drowsiness and distraction detection</li>
+                        <li>Robust detection logic with false positive reduction</li>
+                        <li>User-friendly interface with visual and audio feedback</li>
+                        <li>Evaluation framework for performance assessment</li>
+                    </ul>
+                </div>
+
+                <div class="two-column">
+                    <div class="box">
+                        <h3>Advantages</h3>
+                        <ul>
+                            <li><span class="checkmark">✓</span> High societal impact</li>
+                            <li><span class="checkmark">✓</span> Real-time performance</li>
+                            <li><span class="checkmark">✓</span> Non-intrusive</li>
+                            <li><span class="checkmark">✓</span> Open source</li>
+                        </ul>
+                    </div>
+
+                    <div class="box">
+                        <h3>Future Enhancements</h3>
+                        <ul>
+                            <li>Machine Learning Integration</li>
+                            <li>Multi-person Detection</li>
+                            <li>Mobile Deployment</li>
+                            <li>Advanced ADAS Integration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="box" style="margin-top: 20px; text-align: center;">
+                    <h3>Repository</h3>
+                    <p style="font-size: 1.2em;">
+                        <span class="highlight">GitHub:</span> 
+                        https://github.com/KNeel7301/Driver-Drowsiness-Detection
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-number">
+        <span id="currentSlide">1</span> / 7
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn">← Previous</button>
+        <button id="nextBtn">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 7;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => slide.classList.remove('active'));
+            
+            if (n > totalSlides) currentSlide = totalSlides;
+            if (n < 1) currentSlide = 1;
+            
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('currentSlide').textContent = currentSlide;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+        }
+
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            currentSlide--;
+            showSlide(currentSlide);
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentSlide++;
+            showSlide(currentSlide);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                currentSlide++;
+                showSlide(currentSlide);
+            } else if (e.key === 'ArrowLeft') {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
